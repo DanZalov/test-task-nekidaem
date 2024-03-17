@@ -2,6 +2,7 @@
   <div>
     <!-- <NuxtWelcome /> -->
     <!-- <Table /> -->
-    <Transitions />
+    <!-- <Transitions /> -->
+    <NewTable />
   </div>
 </template>
