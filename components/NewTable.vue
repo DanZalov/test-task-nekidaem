@@ -109,13 +109,6 @@ const drag = ref(false)
       >
         <template #item="{ element }">
           <li class="list-group-item">
-            <i
-              :class="
-                element.fixed ? 'fa fa-anchor' : 'glyphicon glyphicon-pushpin'
-              "
-              @click="element.fixed = !element.fixed"
-              aria-hidden="true"
-            ></i>
             {{ element.value }}
           </li>
         </template>
@@ -139,13 +132,6 @@ const drag = ref(false)
       >
         <template #item="{ element }">
           <li class="list-group-item">
-            <i
-              :class="
-                element.fixed ? 'fa fa-anchor' : 'glyphicon glyphicon-pushpin'
-              "
-              @click="element.fixed = !element.fixed"
-              aria-hidden="true"
-            ></i>
             {{ element.value }}
           </li>
         </template>
@@ -169,13 +155,6 @@ const drag = ref(false)
       >
         <template #item="{ element }">
           <li class="list-group-item">
-            <i
-              :class="
-                element.fixed ? 'fa fa-anchor' : 'glyphicon glyphicon-pushpin'
-              "
-              @click="element.fixed = !element.fixed"
-              aria-hidden="true"
-            ></i>
             {{ element.value }}
           </li>
         </template>
@@ -199,13 +178,6 @@ const drag = ref(false)
       >
         <template #item="{ element }">
           <li class="list-group-item">
-            <i
-              :class="
-                element.fixed ? 'fa fa-anchor' : 'glyphicon glyphicon-pushpin'
-              "
-              @click="element.fixed = !element.fixed"
-              aria-hidden="true"
-            ></i>
             {{ element.value }}
           </li>
         </template>
@@ -227,6 +199,34 @@ const drag = ref(false)
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 20px;
+}
+
+.column {
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+  padding: 10px;
+  text-align: center;
+  height: fit-content;
+}
+
+.column h3 {
+  margin: 0;
+  margin-bottom: 10px;
+}
+
+.list-group {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.list-group-item {
+  margin: 0;
+  font-size: 14px;
+  color: #333;
+  padding: 8px;
+  text-align: left;
+  border: 1px solid #ccc;
+  margin-bottom: 5px;
 }
 
 .flip-list-move {
