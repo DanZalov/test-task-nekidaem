@@ -88,6 +88,14 @@ const list2 = ref([...defaultList2])
 const list3 = ref([...defaultList1])
 const list4 = ref([...defaultList2])
 const drag = ref(false)
+const newItem = ref('')
+
+function addItem() {
+  if (newItem.value.trim() !== '') {
+    list1.value.push({ value: newItem.value, id: Date.now() })
+    newItem.value = ''
+  }
+}
 </script>
 
 <template>
@@ -105,7 +113,7 @@ const drag = ref(false)
         v-bind="dragOptions"
         @start="drag = true"
         @end="drag = false"
-        item-key="order"
+        item-key="id"
       >
         <template #item="{ element }">
           <li class="list-group-item">
@@ -113,6 +121,10 @@ const drag = ref(false)
           </li>
         </template>
       </draggable>
+      <div class="add-item-form">
+        <input type="text" v-model="newItem" placeholder="Добавить карточку" />
+        <button @click="addItem">Добавить</button>
+      </div>
     </div>
 
     <div class="column">
@@ -128,7 +140,7 @@ const drag = ref(false)
         v-bind="dragOptions"
         @start="drag = true"
         @end="drag = false"
-        item-key="order"
+        item-key="id"
       >
         <template #item="{ element }">
           <li class="list-group-item">
@@ -151,7 +163,7 @@ const drag = ref(false)
         v-bind="dragOptions"
         @start="drag = true"
         @end="drag = false"
-        item-key="order"
+        item-key="id"
       >
         <template #item="{ element }">
           <li class="list-group-item">
@@ -174,7 +186,7 @@ const drag = ref(false)
         v-bind="dragOptions"
         @start="drag = true"
         @end="drag = false"
-        item-key="order"
+        item-key="id"
       >
         <template #item="{ element }">
           <li class="list-group-item">
@@ -184,13 +196,13 @@ const drag = ref(false)
       </draggable>
     </div>
 
-    <NewRawDisplayer class="col-3" :value="list1" title="List" />
+    <NewRawDisplayer :value="list1" title="List" />
 
-    <NewRawDisplayer class="col-3" :value="list2" title="List" />
+    <NewRawDisplayer :value="list2" title="List" />
 
-    <NewRawDisplayer class="col-3" :value="list3" title="List" />
+    <NewRawDisplayer :value="list3" title="List" />
 
-    <NewRawDisplayer class="col-3" :value="list4" title="List" />
+    <NewRawDisplayer :value="list4" title="List" />
   </div>
 </template>
 
@@ -238,7 +250,7 @@ const drag = ref(false)
 }
 
 .ghost {
-  opacity: 0.5;
+  opacity: 0.1;
   background: #c8ebfb;
 }
 
@@ -251,6 +263,23 @@ const drag = ref(false)
 }
 
 .list-group-item i {
+  cursor: pointer;
+}
+
+.add-item-form {
+  display: flex;
+}
+
+.add-item-form input[type='text'] {
+  flex: 1;
+  margin-right: 10px;
+}
+
+.add-item-form button {
+  padding: 8px 15px;
+  background-color: #4f5051;
+  color: #fff;
+  border: none;
   cursor: pointer;
 }
 </style>
