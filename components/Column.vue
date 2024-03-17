@@ -2,7 +2,7 @@
 import draggable from 'vuedraggable'
 import { type DragOptionsProps } from './NewTable.vue'
 
-interface ListItem {
+export interface ListItem {
   value: string
   id: number
 }
@@ -82,15 +82,7 @@ const props = defineProps<{
   dragOptions: DragOptionsProps
 }>()
 const drag = ref(false)
-const newItem = ref('')
 const list = ref([...defaultList2])
-
-function addItem() {
-  if (newItem.value.trim() !== '') {
-    list.value.push({ value: newItem.value, id: Date.now() })
-    newItem.value = ''
-  }
-}
 </script>
 
 <template>
@@ -115,10 +107,7 @@ function addItem() {
         </li>
       </template>
     </draggable>
-    <div class="add-item-form">
-      <input type="text" v-model="newItem" placeholder="Добавить карточку" />
-      <button @click="addItem">Добавить</button>
-    </div>
+    <ItemForm :list="list" />
   </div>
 </template>
 
@@ -173,23 +162,6 @@ function addItem() {
 }
 
 .list-group-item i {
-  cursor: pointer;
-}
-
-.add-item-form {
-  display: flex;
-}
-
-.add-item-form input[type='text'] {
-  flex: 1;
-  margin-right: 10px;
-}
-
-.add-item-form button {
-  padding: 8px 15px;
-  background-color: #676768;
-  color: #fff;
-  border: none;
   cursor: pointer;
 }
 </style>
