@@ -33,12 +33,7 @@ function removeItem(item: ListItem) {
       item-key="id"
     >
       <template #item="{ element }">
-        <li class="list-group-item">
-          <span>{{ element.value }}</span>
-          <span>
-            <IconClose :size="22" @click="removeItem(element)" />
-          </span>
-        </li>
+        <ListItem :element="element" :removeItem="removeItem" />
       </template>
     </draggable>
     <ItemForm :list="model || []" />
@@ -64,29 +59,6 @@ function removeItem(item: ListItem) {
   padding-left: 0;
 }
 
-.list-group-item {
-  margin: 0;
-  font-size: 14px;
-  color: #333;
-  padding: 0px 8px;
-  text-align: left;
-  border: 1px solid #ccc;
-  margin-bottom: 5px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.list-group-item span:first-child {
-  padding: 6px 0px;
-}
-
-.list-group-item span:last-child {
-  display: flex;
-  justify-content: center;
-  cursor: pointer;
-}
-
 .flip-list-move {
   transition: transform 0.5s;
 }
@@ -102,13 +74,5 @@ function removeItem(item: ListItem) {
 
 .list-group {
   min-height: 20px;
-}
-
-.list-group-item {
-  cursor: move;
-}
-
-.list-group-item i {
-  cursor: pointer;
 }
 </style>
