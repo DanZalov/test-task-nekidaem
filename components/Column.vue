@@ -8,11 +8,17 @@ const props = defineProps<{
   dragOptions: DragOptionsProps
 }>()
 const drag = ref(false)
+function removeItem(item: ListItem) {
+  const index = model.value?.indexOf(item)
+  if (index) {
+    model.value?.splice(index, 1)
+  }
+}
 </script>
 
 <template>
   <div class="column">
-    <h3>{{ title }}</h3>
+    <h3>{{ title }} ({{ model?.length }})</h3>
     <draggable
       class="list-group"
       :component-data="{
@@ -28,7 +34,10 @@ const drag = ref(false)
     >
       <template #item="{ element }">
         <li class="list-group-item">
-          {{ element.value }}
+          <span>{{ element.value }}</span>
+          <span>
+            <IconClose :size="22" @click="removeItem(element)" />
+          </span>
         </li>
       </template>
     </draggable>
@@ -59,10 +68,23 @@ const drag = ref(false)
   margin: 0;
   font-size: 14px;
   color: #333;
-  padding: 8px;
+  padding: 0px 8px;
   text-align: left;
   border: 1px solid #ccc;
   margin-bottom: 5px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.list-group-item span:first-child {
+  padding: 6px 0px;
+}
+
+.list-group-item span:last-child {
+  display: flex;
+  justify-content: center;
+  cursor: pointer;
 }
 
 .flip-list-move {
