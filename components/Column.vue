@@ -2,87 +2,13 @@
 import draggable from 'vuedraggable'
 import { type DragOptionsProps } from './NewTable.vue'
 
-export interface ListItem {
-  value: string
-  id: number
-}
-
-const defaultList1: ListItem[] = [
-  {
-    value: 'vue.draggable',
-    id: 0,
-  },
-  {
-    value: 'draggable',
-    id: 1,
-  },
-  {
-    value: 'component',
-    id: 2,
-  },
-  {
-    value: 'for',
-    id: 3,
-  },
-  {
-    value: 'vue.js 2.0',
-    id: 4,
-  },
-  {
-    value: 'based',
-    id: 5,
-  },
-  {
-    value: 'on',
-    id: 6,
-  },
-  {
-    value: 'Sortablejs',
-    id: 7,
-  },
-]
-
-const defaultList2: ListItem[] = [
-  {
-    value: 'vue.draggable.next',
-    id: 10,
-  },
-  {
-    value: 'draggable',
-    id: 11,
-  },
-  {
-    value: 'component',
-    id: 12,
-  },
-  {
-    value: 'for',
-    id: 13,
-  },
-  {
-    value: 'next 3.0',
-    id: 14,
-  },
-  {
-    value: 'based',
-    id: 15,
-  },
-  {
-    value: 'on',
-    id: 16,
-  },
-  {
-    value: 'Sortablejs',
-    id: 17,
-  },
-]
-
+const store = useTasksStore()
+const model = defineModel<ListItem[]>()
 const props = defineProps<{
   title: string
   dragOptions: DragOptionsProps
 }>()
 const drag = ref(false)
-const list = ref([...defaultList2])
 </script>
 
 <template>
@@ -95,7 +21,7 @@ const list = ref([...defaultList2])
         type: 'transition-group',
         name: !drag ? 'flip-list' : null,
       }"
-      v-model="list"
+      v-model="model"
       v-bind="dragOptions"
       @start="drag = true"
       @end="drag = false"
@@ -107,7 +33,7 @@ const list = ref([...defaultList2])
         </li>
       </template>
     </draggable>
-    <ItemForm :list="list" />
+    <ItemForm :list="model || []" />
   </div>
 </template>
 
