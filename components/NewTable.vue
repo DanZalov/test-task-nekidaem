@@ -43,9 +43,9 @@ const titles = ['On hold', 'In progress', 'Need review', 'Approved']
     />
 
     <NewRawDisplayer
-      v-for="i of 4"
-      :value="store.getArrValues(i - 1)"
-      title="List"
+      v-for="(currentTitle, index) of titles"
+      :value="store.getArrValues(index)"
+      :title="currentTitle"
     />
   </div>
 </template>

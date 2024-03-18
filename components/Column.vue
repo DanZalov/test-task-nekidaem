@@ -2,7 +2,6 @@
 import draggable from 'vuedraggable'
 import { type DragOptionsProps } from './NewTable.vue'
 
-const store = useTasksStore()
 const model = defineModel<ListItem[]>()
 const props = defineProps<{
   title: string
