@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import type { ColumnRow, ListItem } from '~/stores/tasks'
-
 const props = defineProps<{
   list: ListItem[]
   column: ColumnRow

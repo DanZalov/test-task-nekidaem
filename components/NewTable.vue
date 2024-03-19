@@ -1,11 +1,4 @@
 <script setup lang="ts">
-export interface DragOptionsProps {
-  animation: number
-  group: string
-  disabled: boolean
-  ghostClass: string
-}
-
 const dragOptions: DragOptionsProps = {
   animation: 200,
   group: 'description',

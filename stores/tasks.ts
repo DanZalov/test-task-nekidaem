@@ -1,29 +1,3 @@
-export interface ListItem {
-  value: string
-  id: number
-}
-
-export interface UserData {
-  username: string
-  email?: string
-  password: string
-  token: string
-}
-
-export interface TokenData {
-  access: string
-  refresh: string
-}
-
-export type ColumnRow = '0' | '1' | '2' | '3'
-
-export interface TasksItem {
-  id: number
-  row: ColumnRow
-  seq_num: number
-  text: string
-}
-
 const baseURL = 'https://trello.backend.tests.nekidaem.ru/api/v1/'
 
 export const useTasksStore = defineStore('tasks', {

@@ -1,13 +1,5 @@
 <script setup lang="ts">
 import draggable from 'vuedraggable'
-import { type DragOptionsProps } from './NewTable.vue'
-
-interface CustomEventType {
-  added: {
-    newIndex: number
-    element: ListItem
-  }
-}
 
 const model = defineModel<ListItem[]>()
 const store = useTasksStore()
