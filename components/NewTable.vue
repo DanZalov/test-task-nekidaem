@@ -15,6 +15,10 @@ const dragOptions: DragOptionsProps = {
 
 const store = useTasksStore()
 const titles = ['On hold', 'In progress', 'Need review', 'Approved']
+
+onMounted(async () => {
+  await store.getData()
+})
 </script>
 
 <template>
@@ -25,21 +29,29 @@ const titles = ['On hold', 'In progress', 'Need review', 'Approved']
       :dragOptions="dragOptions"
       :order="index"
     /> -->
-    <Column title="On hold" :dragOptions="dragOptions" v-model="store.hold" />
+    <Column
+      title="On hold"
+      :dragOptions="dragOptions"
+      v-model="store.hold"
+      :column="'0'"
+    />
     <Column
       title="In progress"
       :dragOptions="dragOptions"
       v-model="store.progress"
+      :column="'1'"
     />
     <Column
       title="Need review"
       :dragOptions="dragOptions"
       v-model="store.review"
+      :column="'2'"
     />
     <Column
       title="Approved"
       :dragOptions="dragOptions"
       v-model="store.approved"
+      :column="'3'"
     />
 
     <NewRawDisplayer

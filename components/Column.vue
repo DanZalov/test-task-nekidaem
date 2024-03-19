@@ -3,9 +3,11 @@ import draggable from 'vuedraggable'
 import { type DragOptionsProps } from './NewTable.vue'
 
 const model = defineModel<ListItem[]>()
+const store = useTasksStore()
 const props = defineProps<{
   title: string
   dragOptions: DragOptionsProps
+  column: ColumnRow
 }>()
 const drag = ref(false)
 function removeItem(item: ListItem) {
@@ -13,6 +15,7 @@ function removeItem(item: ListItem) {
   if (index) {
     model.value?.splice(index, 1)
   }
+  store.removeTask(item.id)
 }
 </script>
 
@@ -33,10 +36,14 @@ function removeItem(item: ListItem) {
       item-key="id"
     >
       <template #item="{ element }">
-        <ListItem :element="element" :removeItem="removeItem" />
+        <ListItem
+          :element="element"
+          :removeItem="removeItem"
+          :column="column"
+        />
       </template>
     </draggable>
-    <ItemForm :list="model || []" />
+    <ItemForm :list="model || []" :column="column" />
   </div>
 </template>
 

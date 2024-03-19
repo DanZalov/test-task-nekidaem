@@ -1,16 +1,20 @@
 <script setup lang="ts">
-import type { ListItem } from '~/stores/tasks'
+import type { ColumnRow, ListItem } from '~/stores/tasks'
 
 const props = defineProps<{
   list: ListItem[]
+  column: ColumnRow
 }>()
 const newItem = ref('')
+const store = useTasksStore()
 
 function addItem() {
-  if (newItem.value.trim() !== '') {
-    props.list.push({ value: newItem.value, id: Date.now() })
+  const tempValue = newItem.value.trim()
+  if (tempValue !== '') {
+    props.list.push({ value: tempValue, id: Date.now() })
     newItem.value = ''
   }
+  store.addTask(props.column, tempValue)
 }
 </script>
 
