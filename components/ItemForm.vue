@@ -12,9 +12,9 @@ function addItem() {
   const tempValue = newItem.value.trim()
   if (tempValue !== '') {
     props.list.push({ value: tempValue, id: Date.now() })
+    store.addTask(props.column, tempValue)
     newItem.value = ''
   }
-  store.addTask(props.column, tempValue)
 }
 </script>
 

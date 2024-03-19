@@ -14,8 +14,8 @@ function removeItem(item: ListItem) {
   const index = model.value?.indexOf(item)
   if (index) {
     model.value?.splice(index, 1)
+    store.removeTask(item.id)
   }
-  store.removeTask(item.id)
 }
 </script>
 
