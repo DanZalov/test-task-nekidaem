@@ -134,17 +134,17 @@ export const useTasksStore = defineStore('tasks', {
             this.hold[item.seq_num].id = item.id
             break
           case '1':
-            this.hold[item.seq_num] = {} as ListItem
+            this.progress[item.seq_num] = {} as ListItem
             this.progress[item.seq_num].value = item.text
             this.progress[item.seq_num].id = item.id
             break
           case '2':
-            this.hold[item.seq_num] = {} as ListItem
+            this.review[item.seq_num] = {} as ListItem
             this.review[item.seq_num].value = item.text
             this.review[item.seq_num].id = item.id
             break
           default:
-            this.hold[item.seq_num] = {} as ListItem
+            this.approved[item.seq_num] = {} as ListItem
             this.approved[item.seq_num].value = item.text
             this.approved[item.seq_num].id = item.id
             break
@@ -154,23 +154,21 @@ export const useTasksStore = defineStore('tasks', {
     async getData() {
       if (this.accessToken) {
         try {
-          const response = await useFetch<TasksItem[]>('cards/', {
+          const { data, error } = await useFetch<TasksItem[]>('cards/', {
             baseURL,
             headers: {
               Authorization: `JWT ${this.accessToken}`,
             },
           })
-          if (response.status.value !== 'error') {
-            if (response.data.value) {
-              this.hold.length =
-                this.progress.length =
-                this.review.length =
-                this.approved.length =
-                  0
-              this.organizeData(response.data.value)
-            }
+          if (data.value) {
+            this.hold.length =
+              this.progress.length =
+              this.review.length =
+              this.approved.length =
+                0
+            this.organizeData(data.value)
           } else if (
-            response.error.value?.data.detail ===
+            error.value?.data.detail ===
             'Given token not valid for any token type'
           ) {
             await this.createUserToken()
@@ -188,7 +186,7 @@ export const useTasksStore = defineStore('tasks', {
     async addTask(row: ColumnRow, text: string) {
       if (this.accessToken) {
         try {
-          const { data } = await useFetch<TasksItem>('cards/', {
+          const { data, error } = await useFetch<TasksItem>('cards/', {
             method: 'POST',
             body: {
               row,
@@ -201,6 +199,12 @@ export const useTasksStore = defineStore('tasks', {
           })
           if (data.value) {
             this.organizeData([data.value])
+          } else if (
+            error.value?.data.detail ===
+            'Given token not valid for any token type'
+          ) {
+            await this.createUserToken()
+            await this.addTask(row, text)
           }
         } catch (error) {
           console.log(error)
@@ -211,16 +215,61 @@ export const useTasksStore = defineStore('tasks', {
         await this.addTask(row, text)
       }
     },
+    async updateTask(
+      row: ColumnRow,
+      text: string,
+      id: number,
+      seq_num: number,
+    ) {
+      if (this.accessToken) {
+        try {
+          const { data, error } = await useFetch<TasksItem>(`cards/${id}`, {
+            method: 'PATCH',
+            body: {
+              row,
+              text,
+              seq_num,
+            },
+            baseURL,
+            headers: {
+              Authorization: `JWT ${this.accessToken}`,
+            },
+          })
+          if (data.value) {
+            this.organizeData([data.value])
+          } else if (
+            error.value?.data.detail ===
+            'Given token not valid for any token type'
+          ) {
+            await this.createUserToken()
+            await this.updateTask(row, text, id, seq_num)
+          }
+        } catch (error) {
+          console.log(error)
+          return error
+        }
+      } else {
+        await this.createUserToken()
+        await this.updateTask(row, text, id, seq_num)
+      }
+    },
     async removeTask(id: number) {
       if (this.accessToken) {
         try {
-          await useFetch<TasksItem>(`cards/${id}`, {
+          const { error } = await useFetch<TasksItem>(`cards/${id}`, {
             method: 'DELETE',
             baseURL,
             headers: {
               Authorization: `JWT ${this.accessToken}`,
             },
           })
+          if (
+            error.value?.data.detail ===
+            'Given token not valid for any token type'
+          ) {
+            await this.createUserToken()
+            await this.removeTask(id)
+          }
         } catch (error) {
           console.log(error)
           return error

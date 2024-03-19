@@ -2,6 +2,13 @@
 import draggable from 'vuedraggable'
 import { type DragOptionsProps } from './NewTable.vue'
 
+interface CustomEventType {
+  added: {
+    newIndex: number
+    element: ListItem
+  }
+}
+
 const model = defineModel<ListItem[]>()
 const store = useTasksStore()
 const props = defineProps<{
@@ -12,9 +19,21 @@ const props = defineProps<{
 const drag = ref(false)
 function removeItem(item: ListItem) {
   const index = model.value?.indexOf(item)
-  if (index) {
+  console.log(index)
+  if (index !== undefined) {
     model.value?.splice(index, 1)
     store.removeTask(item.id)
+  }
+}
+function dragHandler(e: CustomEventType) {
+  const addedElement = e.added
+  if (addedElement) {
+    store.updateTask(
+      props.column,
+      addedElement.element.value,
+      addedElement.element.id,
+      addedElement.newIndex,
+    )
   }
 }
 </script>
@@ -33,6 +52,7 @@ function removeItem(item: ListItem) {
       v-bind="dragOptions"
       @start="drag = true"
       @end="drag = false"
+      @change="dragHandler"
       item-key="id"
     >
       <template #item="{ element }">
