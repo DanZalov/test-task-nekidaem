@@ -56,67 +56,63 @@ export const useTasksStore = defineStore('tasks', {
       }
     },
     async getData() {
-      if (this.accessToken) {
-        try {
-          const { data, error } = await useFetch<TasksItem[]>('cards/', {
-            baseURL,
-            headers: {
-              Authorization: `JWT ${this.accessToken}`,
-            },
-          })
-          if (data.value) {
-            this.hold.length =
-              this.progress.length =
-              this.review.length =
-              this.approved.length =
-                0
-            this.organizeData(data.value)
-          } else if (
-            error.value?.data.detail ===
-            'Given token not valid for any token type'
-          ) {
-            await this.createUserToken()
-            await this.getData()
-          }
-        } catch (error) {
-          console.log(error)
-          return error
-        }
-      } else {
+      if (!this.accessToken) {
         await this.createUserToken()
-        await this.getData()
+      }
+      try {
+        const { data, error } = await useFetch<TasksItem[]>('cards/', {
+          baseURL,
+          headers: {
+            Authorization: `JWT ${this.accessToken}`,
+          },
+        })
+        if (data.value) {
+          this.hold.length =
+            this.progress.length =
+            this.review.length =
+            this.approved.length =
+              0
+          this.organizeData(data.value)
+        } else if (
+          error.value?.data.detail ===
+          'Given token not valid for any token type'
+        ) {
+          await this.createUserToken()
+          await this.getData()
+        }
+      } catch (error) {
+        console.log(error)
+        return error
       }
     },
     async addTask(row: ColumnRow, text: string) {
-      if (this.accessToken) {
-        try {
-          const { data, error } = await useFetch<TasksItem>('cards/', {
-            method: 'POST',
-            body: {
-              row,
-              text,
-            },
-            baseURL,
-            headers: {
-              Authorization: `JWT ${this.accessToken}`,
-            },
-          })
-          if (data.value) {
-            this.organizeData([data.value])
-          } else if (
-            error.value?.data.detail ===
-            'Given token not valid for any token type'
-          ) {
-            await this.createUserToken()
-            await this.addTask(row, text)
-          }
-        } catch (error) {
-          console.log(error)
-          return error
-        }
-      } else {
+      if (!this.accessToken) {
         await this.createUserToken()
-        await this.addTask(row, text)
+      }
+      try {
+        const { data, error } = await useFetch<TasksItem>('cards/', {
+          method: 'POST',
+          body: {
+            row,
+            text,
+          },
+          baseURL,
+          headers: {
+            Authorization: `JWT ${this.accessToken}`,
+          },
+        })
+        if (data.value) {
+          this.organizeData([data.value])
+        } else if (
+          error.value?.data.detail ===
+          'Given token not valid for any token type'
+        ) {
+          await this.createUserToken()
+          await this.addTask(row, text)
+        }
+      } catch (error) {
+        console.log(error)
+        return error
       }
     },
     async updateTask(
@@ -125,62 +121,58 @@ export const useTasksStore = defineStore('tasks', {
       id: number,
       seq_num: number,
     ) {
-      if (this.accessToken) {
-        try {
-          const { data, error } = await useFetch<TasksItem>(`cards/${id}`, {
-            method: 'PATCH',
-            body: {
-              row,
-              text,
-              seq_num,
-            },
-            baseURL,
-            headers: {
-              Authorization: `JWT ${this.accessToken}`,
-            },
-          })
-          if (data.value) {
-            this.organizeData([data.value])
-          } else if (
-            error.value?.data.detail ===
-            'Given token not valid for any token type'
-          ) {
-            await this.createUserToken()
-            await this.updateTask(row, text, id, seq_num)
-          }
-        } catch (error) {
-          console.log(error)
-          return error
-        }
-      } else {
+      if (!this.accessToken) {
         await this.createUserToken()
-        await this.updateTask(row, text, id, seq_num)
+      }
+      try {
+        const { data, error } = await useFetch<TasksItem>(`cards/${id}`, {
+          method: 'PATCH',
+          body: {
+            row,
+            text,
+            seq_num,
+          },
+          baseURL,
+          headers: {
+            Authorization: `JWT ${this.accessToken}`,
+          },
+        })
+        if (data.value) {
+          this.organizeData([data.value])
+        } else if (
+          error.value?.data.detail ===
+          'Given token not valid for any token type'
+        ) {
+          await this.createUserToken()
+          await this.updateTask(row, text, id, seq_num)
+        }
+      } catch (error) {
+        console.log(error)
+        return error
       }
     },
     async removeTask(id: number) {
-      if (this.accessToken) {
-        try {
-          const { error } = await useFetch<TasksItem>(`cards/${id}`, {
-            method: 'DELETE',
-            baseURL,
-            headers: {
-              Authorization: `JWT ${this.accessToken}`,
-            },
-          })
-          if (
-            error.value?.data.detail ===
-            'Given token not valid for any token type'
-          ) {
-            await this.createUserToken()
-            await this.removeTask(id)
-          }
-        } catch (error) {
-          console.log(error)
-          return error
-        }
-      } else {
+      if (!this.accessToken) {
         await this.createUserToken()
-        await this.removeTask(id)
+      }
+      try {
+        const { error } = await useFetch<TasksItem>(`cards/${id}`, {
+          method: 'DELETE',
+          baseURL,
+          headers: {
+            Authorization: `JWT ${this.accessToken}`,
+          },
+        })
+        if (
+          error.value?.data.detail ===
+          'Given token not valid for any token type'
+        ) {
+          await this.createUserToken()
+          await this.removeTask(id)
+        }
+      } catch (error) {
+        console.log(error)
+        return error
       }
     },
     async registerUser() {

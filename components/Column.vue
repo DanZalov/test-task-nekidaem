@@ -11,7 +11,6 @@ const props = defineProps<{
 const drag = ref(false)
 function removeItem(item: ListItem) {
   const index = model.value?.indexOf(item)
-  console.log(index)
   if (index !== undefined) {
     model.value?.splice(index, 1)
     store.removeTask(item.id)
