@@ -12,23 +12,6 @@ export const useTasksStore = defineStore('tasks', {
     refreshToken: '',
   }),
   actions: {
-    getArrValues(index: number) {
-      switch (index) {
-        case 0:
-          return this.hold
-          break
-        case 1:
-          return this.progress
-          break
-        case 2:
-          return this.review
-          break
-
-        default:
-          return this.approved
-          break
-      }
-    },
     organizeData(fetchedData: TasksItem[]) {
       for (let item of fetchedData) {
         switch (item.row) {
@@ -54,6 +37,7 @@ export const useTasksStore = defineStore('tasks', {
             break
         }
       }
+      this.removeEmpty()
     },
     async getData() {
       if (!this.accessToken) {
@@ -226,6 +210,53 @@ export const useTasksStore = defineStore('tasks', {
       } catch (error) {
         console.log(error)
         return error
+      }
+    },
+    removeEmpty() {
+      if (this.hold.length > 0) {
+        for (let i = 0; i < this.hold.length; i++) {
+          if (this.hold[i] === undefined) {
+            this.hold.splice(i, 1)
+            i--
+          }
+        }
+      }
+      if (this.progress.length > 0) {
+        for (let i = 0; i < this.progress.length; i++) {
+          if (this.progress[i] === undefined) {
+            this.progress.splice(i, 1)
+            i--
+          }
+        }
+      }
+      if (this.review.length > 0) {
+        for (let i = 0; i < this.review.length; i++) {
+          if (this.review[i] === undefined) {
+            this.review.splice(i, 1)
+            i--
+          }
+        }
+      }
+      if (this.approved.length > 0) {
+        for (let i = 0; i < this.approved.length; i++) {
+          if (this.approved[i] === undefined) {
+            this.approved.splice(i, 1)
+            i--
+          }
+        }
+      }
+    },
+    getArrValues(index: number) {
+      switch (index) {
+        case 0:
+          return this.hold
+        case 1:
+          return this.progress
+        case 2:
+          return this.review
+
+        default:
+          return this.approved
       }
     },
   },

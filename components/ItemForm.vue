@@ -6,12 +6,15 @@ const props = defineProps<{
 const newItem = ref('')
 const store = useTasksStore()
 
-function addItem() {
+async function addItem() {
   const tempValue = newItem.value.trim()
   if (tempValue !== '') {
-    props.list.push({ value: tempValue, id: Date.now() })
-    store.addTask(props.column, tempValue)
+    const tempListItem = { value: tempValue, id: Date.now() }
+    props.list.push(tempListItem)
     newItem.value = ''
+    await store.addTask(props.column, tempValue)
+    const index = props.list.indexOf(tempListItem)
+    if (index > 0) props.list.splice(index, 1)
   }
 }
 </script>
