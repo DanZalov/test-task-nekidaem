@@ -24,7 +24,10 @@ function addItem() {
       placeholder="Добавить карточку"
       @keydown.enter="addItem"
     />
-    <button @click="addItem">Добавить</button>
+    <button class="desktop" @click="addItem">Добавить</button>
+    <button class="mobile" @click="addItem">
+      <IconPlus :size="22" />
+    </button>
   </div>
 </template>
 
@@ -46,5 +49,29 @@ function addItem() {
   color: #fff;
   border: none;
   cursor: pointer;
+}
+
+.add-item-form button.mobile {
+  padding: 2px 4px;
+  background-color: #c1c1c8;
+  border: 1px solid #676768;
+}
+
+.mobile {
+  display: flex;
+}
+
+.desktop {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .mobile {
+    display: none;
+  }
+
+  .desktop {
+    display: flex;
+  }
 }
 </style>
