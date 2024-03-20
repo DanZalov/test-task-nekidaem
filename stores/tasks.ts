@@ -8,7 +8,7 @@ export const useTasksStore = defineStore('tasks', {
     progress: [] as ListItem[],
     review: [] as ListItem[],
     approved: [] as ListItem[],
-    accessToken: '',
+    accessToken: 'token',
     refreshToken: '',
   }),
   actions: {
@@ -60,25 +60,25 @@ export const useTasksStore = defineStore('tasks', {
         await this.createUserToken()
       }
       try {
-        const { data, error } = await useFetch<TasksItem[]>('cards/', {
+        const response = await $fetch<TasksItem[]>('cards/', {
           baseURL,
           headers: {
             Authorization: `JWT ${this.accessToken}`,
           },
+        }).catch(async (error) => {
+          const errorMessage = error.response._data.detail
+          if (errorMessage === 'Given token not valid for any token type') {
+            await this.createUserToken()
+            await this.getData()
+          }
         })
-        if (data.value) {
+        if (response) {
           this.hold.length =
             this.progress.length =
             this.review.length =
             this.approved.length =
               0
-          this.organizeData(data.value)
-        } else if (
-          error.value?.data.detail ===
-          'Given token not valid for any token type'
-        ) {
-          await this.createUserToken()
-          await this.getData()
+          this.organizeData(response)
         }
       } catch (error) {
         console.log(error)
@@ -90,7 +90,7 @@ export const useTasksStore = defineStore('tasks', {
         await this.createUserToken()
       }
       try {
-        const { data, error } = await useFetch<TasksItem>('cards/', {
+        const response = await $fetch<TasksItem>('cards/', {
           method: 'POST',
           body: {
             row,
@@ -100,15 +100,15 @@ export const useTasksStore = defineStore('tasks', {
           headers: {
             Authorization: `JWT ${this.accessToken}`,
           },
+        }).catch(async (error) => {
+          const errorMessage = error.response._data.detail
+          if (errorMessage === 'Given token not valid for any token type') {
+            await this.createUserToken()
+            await this.addTask(row, text)
+          }
         })
-        if (data.value) {
-          this.organizeData([data.value])
-        } else if (
-          error.value?.data.detail ===
-          'Given token not valid for any token type'
-        ) {
-          await this.createUserToken()
-          await this.addTask(row, text)
+        if (response) {
+          this.organizeData([response])
         }
       } catch (error) {
         console.log(error)
@@ -125,7 +125,7 @@ export const useTasksStore = defineStore('tasks', {
         await this.createUserToken()
       }
       try {
-        const { data, error } = await useFetch<TasksItem>(`cards/${id}`, {
+        const response = await $fetch<TasksItem>(`cards/${id}`, {
           method: 'PATCH',
           body: {
             row,
@@ -136,15 +136,15 @@ export const useTasksStore = defineStore('tasks', {
           headers: {
             Authorization: `JWT ${this.accessToken}`,
           },
+        }).catch(async (error) => {
+          const errorMessage = error.response._data.detail
+          if (errorMessage === 'Given token not valid for any token type') {
+            await this.createUserToken()
+            await this.updateTask(row, text, id, seq_num)
+          }
         })
-        if (data.value) {
-          this.organizeData([data.value])
-        } else if (
-          error.value?.data.detail ===
-          'Given token not valid for any token type'
-        ) {
-          await this.createUserToken()
-          await this.updateTask(row, text, id, seq_num)
+        if (response) {
+          this.organizeData([response])
         }
       } catch (error) {
         console.log(error)
@@ -156,20 +156,19 @@ export const useTasksStore = defineStore('tasks', {
         await this.createUserToken()
       }
       try {
-        const { error } = await useFetch<TasksItem>(`cards/${id}`, {
+        await $fetch<TasksItem>(`cards/${id}`, {
           method: 'DELETE',
           baseURL,
           headers: {
             Authorization: `JWT ${this.accessToken}`,
           },
+        }).catch(async (error) => {
+          const errorMessage = error.response._data.detail
+          if (errorMessage === 'Given token not valid for any token type') {
+            await this.createUserToken()
+            await this.removeTask(id)
+          }
         })
-        if (
-          error.value?.data.detail ===
-          'Given token not valid for any token type'
-        ) {
-          await this.createUserToken()
-          await this.removeTask(id)
-        }
       } catch (error) {
         console.log(error)
         return error
@@ -177,7 +176,7 @@ export const useTasksStore = defineStore('tasks', {
     },
     async registerUser() {
       try {
-        const { data } = await useFetch<UserData>('users/create/', {
+        const response = await $fetch<UserData>('users/create/', {
           method: 'POST',
           body: {
             username: this.login,
@@ -185,8 +184,8 @@ export const useTasksStore = defineStore('tasks', {
           },
           baseURL,
         })
-        if (data.value?.token) {
-          this.accessToken = data.value.token
+        if (response?.token) {
+          this.accessToken = response.token
         }
       } catch (error) {
         console.log(error)
@@ -195,7 +194,7 @@ export const useTasksStore = defineStore('tasks', {
     },
     async createUserToken() {
       try {
-        const { data } = await useFetch<TokenData>('users/token/', {
+        const response = await $fetch<TokenData>('users/token/', {
           method: 'POST',
           body: {
             username: this.login,
@@ -203,9 +202,9 @@ export const useTasksStore = defineStore('tasks', {
           },
           baseURL,
         })
-        if (data.value?.access) {
-          this.accessToken = data.value.access
-          this.refreshToken = data.value.refresh
+        if (response?.access) {
+          this.accessToken = response.access
+          this.refreshToken = response.refresh
         }
       } catch (error) {
         console.log(error)
@@ -214,15 +213,15 @@ export const useTasksStore = defineStore('tasks', {
     },
     async refreshUserToken() {
       try {
-        const { data } = await useFetch<TokenData>('users/token/refresh/', {
+        const response = await $fetch<TokenData>('users/token/refresh/', {
           method: 'POST',
           body: {
             refresh: this.refreshToken,
           },
           baseURL,
         })
-        if (data.value?.access) {
-          this.accessToken = data.value.access
+        if (response?.access) {
+          this.accessToken = response.access
         }
       } catch (error) {
         console.log(error)
