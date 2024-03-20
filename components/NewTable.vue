@@ -16,12 +16,6 @@ onMounted(async () => {
 
 <template>
   <div class="table">
-    <!-- <Column
-      v-for="(currentTitle, index) of titles"
-      :title="currentTitle"
-      :dragOptions="dragOptions"
-      :order="index"
-    /> -->
     <Column
       title="On hold"
       :dragOptions="dragOptions"
