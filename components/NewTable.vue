@@ -41,11 +41,11 @@ onMounted(async () => {
       :column="'3'"
     />
 
-    <NewRawDisplayer
+    <!-- <NewRawDisplayer
       v-for="(currentTitle, index) of titles"
       :value="store.getArrValues(index)"
       :title="currentTitle"
-    />
+    /> -->
   </div>
 </template>
 
