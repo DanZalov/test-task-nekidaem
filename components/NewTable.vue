@@ -58,7 +58,13 @@ onMounted(async () => {
 <style>
 .table {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(4, 85%);
   gap: 20px;
+}
+
+@media (min-width: 768px) {
+  .table {
+    grid-template-columns: repeat(4, calc(25% - 15px));
+  }
 }
 </style>

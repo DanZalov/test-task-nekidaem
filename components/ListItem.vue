@@ -26,10 +26,13 @@ const props = defineProps<{
   display: flex;
   justify-content: space-between;
   align-items: center;
+  max-width: 100%;
 }
 
 .list-group-item span:first-child {
   padding: 6px 0px;
+  word-break: break-word;
+  overflow-wrap: break-word;
 }
 
 .list-group-item span:last-child {
