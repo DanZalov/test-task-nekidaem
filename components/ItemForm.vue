@@ -31,6 +31,7 @@ function addItem() {
 <style scoped>
 .add-item-form {
   display: flex;
+  max-width: 100%;
 }
 
 .add-item-form input[type='text'] {
