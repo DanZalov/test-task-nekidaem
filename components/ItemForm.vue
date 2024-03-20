@@ -41,6 +41,7 @@ function addItem() {
   flex: 1;
   margin-right: 10px;
   padding-left: 5px;
+  max-width: calc(100% - 32px);
 }
 
 .add-item-form button {
@@ -72,6 +73,10 @@ function addItem() {
 
   .desktop {
     display: flex;
+  }
+
+  .add-item-form input[type='text'] {
+    max-width: calc(100% - 110px);
   }
 }
 </style>
