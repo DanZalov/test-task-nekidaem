@@ -1,5 +1,6 @@
 <template>
   <div>
-    <NewTable />
+    <!-- <NewTable /> -->
+    <Auth />
   </div>
 </template>

@@ -158,13 +158,14 @@ export const useTasksStore = defineStore('tasks', {
         return error
       }
     },
-    async registerUser() {
+    async registerUser(login: string, password: string, email?: string) {
       try {
         const response = await $fetch<UserData>('users/create/', {
           method: 'POST',
           body: {
-            username: this.login,
-            password: this.password,
+            username: login,
+            password: password,
+            email,
           },
           baseURL,
         })
