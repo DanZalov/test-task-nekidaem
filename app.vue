@@ -1,6 +1,5 @@
 <template>
   <div>
-    <!-- <NewTable /> -->
-    <Auth />
+    <NuxtPage />
   </div>
 </template>

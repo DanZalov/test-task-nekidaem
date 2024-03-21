@@ -8,14 +8,17 @@ const dragOptions: DragOptionsProps = {
 
 const store = useTasksStore()
 const titles = ['On hold', 'In progress', 'Need review', 'Approved']
-
+const loading = ref(true)
 onMounted(async () => {
-  await store.getData()
+  const success = await store.getData()
+  if (success) {
+    loading.value = false
+  }
 })
 </script>
 
 <template>
-  <div class="table">
+  <div v-show="!loading" class="table">
     <Column
       title="On hold"
       :dragOptions="dragOptions"
@@ -47,6 +50,7 @@ onMounted(async () => {
       :title="currentTitle"
     /> -->
   </div>
+  <Loader v-show="loading" />
 </template>
 
 <style>
