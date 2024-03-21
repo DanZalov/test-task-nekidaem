@@ -195,7 +195,7 @@ export const useTasksStore = defineStore('tasks', {
           },
           baseURL,
         }).catch((error) => {
-          this.errorMessage = error.response._data.detail
+          this.authErrorMessage = error.response._data.detail
         })
         if (response?.access) {
           this.accessToken = response.access
